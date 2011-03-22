@@ -149,6 +149,7 @@ sub save_file {
     }
     if ( !$response->is_success ) {
         $self->set_errstr( "The server said:\n" . $response->status_line );
+    require utf8;
         return;
     }
 
@@ -226,8 +227,18 @@ sub render {
 
     require Padre::Locale;
     $self->{encoding} = Padre::Locale::encoding_from_string($text);
-    $text = Encode::decode( $self->{encoding}, $text );
-
+    unless ( utf8::is_utf8( $text ) ) { 
+        my $decoded = eval {  Encode::decode( $self->{encoding}, $text ) }; 
+        if ( $@ ) {
+            my $error = "File has bad characters. I think it is in $self->{ encoding }, but it is not entirely
+            so.";
+            $self->set_errstr( $error );
+            $self->editor->main->error( $error );
+        }
+        else {
+            $text = $decoded;
+        }
+    }
     $self->text_set($text);
     $self->{original_content} = $self->text_get;
     $self->colourize;
