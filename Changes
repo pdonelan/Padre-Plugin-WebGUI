@@ -1,6 +1,7 @@
 Revision history for {{ $dist->name }}
 
 {{ $NEXT }}
+    * Change find_id_of_editor call to editor_id to comply with new (>=0.85) Padre API ( Martin Kamerbeek )
 
 1.002     2011-03-27 15:21:21 America/New_York
     * Improve handling of unicode (arjancwidlak)
