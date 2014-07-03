@@ -256,7 +256,7 @@ sub edit_asset {
     $doc->load_asset( $item->{assetId}, $self->url );
 
     # Fake-save tab so that it isn't in the unsaved state
-    my $id   = $main->find_id_of_editor($editor);
+    my $id   = $main->editor_id($editor);
     my $page = $main->notebook->GetPage($id);
     $page->SetSavePoint;
 
